@@ -3,55 +3,61 @@
         <div id="app_logo">
             <img src="assets/images/snakk_logo.png" alt="sNakk" />
         </div>
-        <div layout="row" layout-align="center">
-            <h3 class="channel-header" flex="100">Channels</h3> 
-            <md-button id="add-channel-button" name="addChannel" ng-click="sendToCreateChannel()"  aria-label="AddChannelButton">
+    <div layout="row" layout-align="center">
+        <h3 class="channel-header" flex="100">Channels</h3> 
+        <md-button id="add-channel-button" name="addChannel" ng-click="sendToCreateChannel()" aria-label="AddChannelButton">
             <md-icon md-svg-src="assets/images/ic_add_circle_outline_black_24px.svg"></md-icon>
-            </md-button>
-        </div>
-        <ul>
-           <li class="channelMsgLists" ng-repeat="channel in channels" ui-sref="chat({channelId: channel.name})">{{channel.name}}</li>
-        </ul>           
-        <div layout="row" layout-align="center">
-             <h3 class="channel-header" flex="100">Direct Messages</h3>
-        </div>
-        <ul>
-            <li class="channelMsgLists" ng-repeat="contact in contacts" ui-sref="chat({channelId: contact})">{{contact}}</li>
-        </ul>
+        </md-button>
+    </div>
+    <ul>
+        <li class="channelMsgLists" ng-repeat="channel in channels" ui-sref="chat({channelId: channel.name})">{{channel.name}}</li>
+    </ul>           
+    <div layout="row" layout-align="center">
+        <h3 class="channel-header" flex="100">Direct Messages</h3>
+    </div>
+    <ul>
+        <li class="channelMsgLists" ng-repeat="contact in contacts" ui-sref="chat({channelId: contact})">{{contact}}</li>
+    </ul>
     </aside>
     <main id="chat-main" flex="80">
-        <header id="chat-header">
-            <div layout="column" layout-align="start end">
-                <md-button class="md-accent md-raised" ng-click="sendToSettings()"  aria-label="SettingsButton"> Settings </md-button>
+    <header id="chat-header">
+        <div layout="column" layout-align="start end">
+        <md-input-container>
+            <md-icon md-svg-src="assets/images/ic_list_black_24px.svg"></md-icon>
+            <md-select ng-model="someModel">
+                <md-button ng-click="sendToSettings()" aria-label="SettingsButton"> Settings </md-button>
+                <md-button ng-click="logout()" aria-label="logoutButton">Log out </md-button>
+            </md-select>
+        </md-input-container>
+        </div>
+    </header>
+    <div layout="column">
+        <div flex="75" id="chat-text-box-container">
+            <div id="chat-text-box-header">
             </div>
-        </header>
-        <div layout="column">
-            <div flex="75" id="chat-text-box-container">
-                <div id="chat-text-box-header">
+            <md-content layout="column">
+                <div id="chat-box"  ng-repeat="message in messageDb  | orderBy: 'date' track by $index">
+                    <img src="{{message.avatar}}" name="avatar" alt="Profile picture" flex="5">
+                    <p id="username">{{message.username}}</p>
+                    <p id="date">{{message.date}}</p>
+                    <p smilies="message.text" id="messagetext">{{message.text}}</p>
                 </div>
-                <md-content layout="column">
-                    <div id="chat-box"  ng-repeat="message in messageDb  | orderBy: 'date' track by $index">
-                        <img src="{{message.avatar}}" name="avatar" alt="Profile picture" flex="5">
-                        <p id="username">{{message.username}}</p>
-                        <p id="date">{{message.date}}</p>
-                        <p smilies="message.text" id="messagetext">{{message.text}}</p>
-                    </div>
-                </md-content>       
-            </div>
-            <md-content id="chat-input-area" layout="row">
-                <form layout="row" flex="100">
-                    <div class="input-group">
-                        <button class="input-group-addon"
+            </md-content>       
+        </div>
+        <md-content id="chat-input-area" layout="row">
+            <form layout="row" flex="100">
+                <div class="input-group">
+                    <button class="input-group-addon"
                             smilies-selector="chatInput"
                             smilies-placement="right">
-                        </button>
-                    </div>
-                    <input id="chat-input-container" type="text" ng-model="chatInput" name="chatInput" placeholder="Message @{{channelName}}" flex="100"/>
-                    <button class="add-attachment">+</button>
-                    <md-button id="chat-button" class="md-accent md-raised" type="submit" ng-disabled="!chatInput || chatInput.length == 0" ng-click="sendMessage(chatInput)">Send</md-button>
+                    </button>
+                </div>
+                <input id="chat-input-container" type="text" ng-model="chatInput" name="chatInput" placeholder="Message @{{channelName}}" flex="100"/>
+                <button class="add-attachment">+</button>
+                <md-button id="chat-button" class="md-accent md-raised" type="submit" ng-disabled="!chatInput || chatInput.length == 0" ng-click="sendMessage(chatInput)">Send</md-button>
 
-                </form>
-            </md-content>
-        </div>
+            </form>
+        </md-content>
+    </div>
     </main>
 </div>
