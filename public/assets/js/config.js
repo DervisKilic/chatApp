@@ -2,21 +2,29 @@ var app = angular.module('app', ['ui.router', 'ngAnimate', 'ngMaterial', 'ngCook
 
 app.config(function($mdThemingProvider, $stateProvider, $qProvider, $urlRouterProvider) {
     $qProvider.errorOnUnhandledRejections(false);
-    $urlRouterProvider.otherwise('login');
+    $urlRouterProvider.otherwise('');
     $mdThemingProvider.theme('dark-grey').backgroundPalette('grey').dark();
     $stateProvider
-        .state('login', {
-            url: '/login',
-            controller : 'loginController',
-            //use assets folder in the search path
-            templateUrl: 'assets/partials/login.html',
+        //TODO ändra state-address i samtliga
+        .state('app', {
+            url: '',
+            controller: 'appController',
+            template: '<ui-view></ui-view>',
             resolve: {
                 sessionUser: function(userService) {
                     return userService.restoreSession();
+                },
+                channels : function(channelService) {
+                    return channelService.getAll();
                 }
             }
+        }) 
+        .state('app.login', {
+            url: '/login',
+            controller : 'loginController',
+            templateUrl: 'assets/partials/login.html'
         })
-        .state('chat', {
+        .state('app.chat', {
             url:'/chat',
             controller: 'chatController',
             templateUrl: 'assets/partials/chat.html',
@@ -27,23 +35,36 @@ app.config(function($mdThemingProvider, $stateProvider, $qProvider, $urlRouterPr
                 userChannels: function(channelService, userService) {
                     return channelService.getChannelsForUser(userService.active._id);
                 },
-                userContacts: function(userService){
+                userContacts: function(userService) {
                     return userService.getUsers();
                 }
-
-
             }
         })
-        .state('settings', {
+        .state('app.settings', {
             url: '/settings',
             controller: 'settingsController',
             templateUrl: 'assets/partials/settings.html'
         })
-        .state('addChannel', {
+        .state('app.addChannel', {
             url: '/addChannel',
             controller: 'channelController',
             templateUrl: 'assets/partials/addChannel.html'
         });
+});
+
+app.controller('appController', function($state, sessionUser, userService, channels, channelService) {
+    console.log('appController');
+    if (channels.length > 0) {
+        channelService.current = channels[0];
+        console.log('current', channelService.current);
+    }
+    if (sessionUser) {
+        console.log('active', sessionUser);
+        userService.active = sessionUser;
+        $state.go('app.chat');
+    } else {
+        $state.go('app.login');
+    }
 });
 
 app.factory('REST', ['$http', '$q', function($http, $q) {
