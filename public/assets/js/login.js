@@ -11,7 +11,8 @@ angular.module('app').run(function($rootScope) {
 
 //TODO bug: if not registered user clicks login before registration and then register and log in = Fails to login
 
-angular.module('app').controller('loginController', function($scope, $rootScope, Authentication, $state, $filter, userService) {
+angular.module('app').controller('loginController', function($scope, $rootScope, Authentication, $state, $filter, userService, sessionUser) {
+    console.log('session', sessionUser);
     var allUsers = userService.getUsers();
     allUsers.then(function(response) {
         console.log('allUsers', response);

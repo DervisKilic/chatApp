@@ -107,6 +107,13 @@ app.get('/channel/direct', function(request, response) {
         });
 });
 
+app.get('/user', function(request, response) {
+    var id = request.query.id;
+    database.collection('users').findOne({'_id' : ObjectId(id)}, function(error, result) {
+        response.send(result);
+    });
+});
+
 // Gets all users from DB
 app.get('/users', function (req, res) {
     database.collection('users').find().toArray(function (err, results) {

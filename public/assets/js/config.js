@@ -9,8 +9,12 @@ app.config(function($mdThemingProvider, $stateProvider, $qProvider, $urlRouterPr
             url: '/login',
             controller : 'loginController',
             //use assets folder in the search path
-            templateUrl: 'assets/partials/login.html'
-            //add controller
+            templateUrl: 'assets/partials/login.html',
+            resolve: {
+                sessionUser: function(userService) {
+                    return userService.restoreSession();
+                }
+            }
         })
         .state('chat', {
             url:'/chat',
@@ -68,11 +72,19 @@ app.factory('REST', ['$http', '$q', function($http, $q) {
     };
 }]);
 
-app.factory("userService", ["REST", function(REST) {
+app.factory("userService", ["REST", '$q', '$cookies', function(REST, $q, $cookies) {
     var url = '/users';
     return{
         active: null,
 
+        restoreSession: function() {
+            var user = $cookies.get('user');
+            if (user) {
+                return REST.get('/user?id=' + user);
+            } else {
+                return null;
+            }
+        },
         post: function (user){
             return REST.post(url, user);
         },
@@ -123,7 +135,6 @@ angular.module('app').factory('channelService', function(REST, userService) {
 });
 
 app.run(function($rootScope, $cookies, channelService) {
-    //$rootScope.channels = [];
     console.log('cookie', $cookies.get('user'));
 
     $rootScope.checkChannels = function() {
