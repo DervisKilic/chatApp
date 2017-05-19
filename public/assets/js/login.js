@@ -9,6 +9,8 @@ angular.module('app').run(function($rootScope) {
     $rootScope.activeChannel = 'Afterwork';
 });
 
+//TODO bug: if not registered user clicks login before registration and then register and log in = Fails to login
+
 angular.module('app').controller('loginController', function($scope, $rootScope, Authentication, $state, $filter, userService) {
     var allUsers = userService.getUsers();
     allUsers.then(function(response) {
@@ -18,6 +20,8 @@ angular.module('app').controller('loginController', function($scope, $rootScope,
 
     $scope.loginButtonClicked = function() {
         if (Authentication.login($scope.email, $scope.password)) {
+            $rootScope.activeUser.status = "online";
+            userService.updateUser($rootScope.activeUser);
             $state.transitionTo('chat');
         } else {
             /*$scope.error = '';
@@ -29,7 +33,7 @@ angular.module('app').controller('loginController', function($scope, $rootScope,
 
     $scope.registerButtonClicked = function() {
         if (Authentication.register($scope.email, $scope.password, $scope.passwordConfirm)){
-            var user = { email: $filter('lowercase')($scope.email), username: $scope.username, password: $scope.password, avatar: ""};
+            var user = { email: $filter('lowercase')($scope.email), username: $scope.username, password: $scope.password, avatar: "", status: ""};
             shownElements();
             userService.post(user).then(function(response) {
                 console.log('new user added');

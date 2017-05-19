@@ -14,22 +14,52 @@ h1 {
 }
 
 #app_logo {
-    display: flex; 
+    display: flex;
     flex: 20;
+}
+.addButton{
+    color: white;
 }
 
 h3.channel-header {
-    text-align: center;
+    margin-left: 14%;
+    color: #AB9BA9;
+}
+h3.channel-header:hover{
+    color: white;
 }
 
-.channelMsgLists:hover {
+.material-icons.md-18 {
+    font-size: 15px;
+}
+
+.material-icons.md-dark {
+    margin-right: 2%;
+    font-size: 15px;
+    color: rgb(56, 151, 141);
+}
+
+.channels-list{
+    list-style: none;
+    font-family: Impact, Charcoal, sans-serif;
+    margin-left: 2%;
+    margin-bottom: 5px;
+}
+
+
+.channelMsgLists:hover{
+    background-color: #3E313C;
+}
+.channelMsgLists {
+    margin-left: 2%;
+    font-family: Impact, Charcoal, sans-serif;
     text-decoration: underline;
-    color: lightblue;
+    color: #AB9BA9;
     cursor: pointer;
 }
 
 #chat-channel-container {
-    background-color: purple;
+    background-color: #4D394B;
     border-radius: 3px;
     border-left: solid 2px black;
     border-top: solid 2px black;
@@ -113,6 +143,7 @@ div.layout-column {
 .smilies-selector-content {
     background-color: white;
     max-width: 400px !important;
+
 }
 
 .channel-title {

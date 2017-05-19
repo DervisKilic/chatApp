@@ -3,21 +3,24 @@
         <div id="app_logo">
             <img src="assets/images/snakk_logo.png" alt="sNakk" />
         </div>
-        <div layout="row" layout-align="center">
-            <h3 class="channel-header" flex="100">Channels</h3> 
+        <div layout="row">
+            <h3 class="channel-header">Channels</h3>
             <md-button id="add-channel-button" name="addChannel" ng-click="sendToCreateChannel()"  aria-label="AddChannelButton">
-            <md-icon md-svg-src="assets/images/ic_add_circle_outline_black_24px.svg"></md-icon>
+                <md-icon md-svg-src="assets/images/ic_add_circle_outline_black_24px.svg"></md-icon>
             </md-button>
         </div>
-        <ul>
-           <li class="channelMsgLists" ng-repeat="channel in userChannels" ng-click="openChat(channel)">{{channel.name}}</li>
-        </ul>           
+
+        <div class="channels-list">
+           <li class="channelMsgLists" ng-repeat="channel in userChannels" ng-click="openChat(channel)"><i class="material-icons md-18">lock_open</i>{{channel.name}}</li>
+        </div>         
         <div layout="row" layout-align="center">
              <h3 class="channel-header" flex="100">Direct Messages</h3>
         </div>
-        <ul>
-            <li class="channelMsgLists" ng-repeat="contact in contacts" ng-click="startDirectChat($root.activeUser, contact)">{{contact.username}}</li>
-        </ul>
+        <div class="channels-list">
+            <li class="channelMsgLists" ng-repeat="contact in contacts" ng-click="startDirectChat($root.activeUser, contact)">
+                <i class="material-icons md-dark" ng-if="contact.status == 'online'">radio_button_checked</i>
+                <i class="material-icons md-dark" ng-if="contact.status == 'offline'">radio_button_unchecked</i>{{contact.username}}</li>
+        </div>
     </aside>
     <main id="chat-main" flex="80">
         <header id="chat-header">
@@ -38,14 +41,14 @@
                         <p id="date">{{message.date}}</p>
                         <p smilies="message.text" id="messagetext">{{message.text}}</p>
                     </div>
-                </md-content>       
+                </md-content>
             </div>
             <md-content id="chat-input-area" layout="row">
                 <form layout="row" flex="100">
                     <div class="input-group">
                         <button class="input-group-addon"
-                            smilies-selector="chatInput"
-                            smilies-placement="right">
+                                smilies-selector="chatInput"
+                                smilies-placement="right">
                         </button>
                     </div>
                     <input id="chat-input-container" type="text" ng-model="chatInput" name="chatInput" placeholder="Message @{{channelName}}" flex="100"/>
