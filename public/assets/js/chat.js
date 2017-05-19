@@ -73,9 +73,9 @@ angular.module('app').controller('chatController', function($scope, $rootScope, 
     };
 
     $scope.startDirectChat = function(userA, userB) {
+        console.log("userA: " + userA._id );
+        console.log("userB: " + userB._id );
         if(userA._id!==userB._id){
-            console.log("userA: " + userA._id );
-            console.log("userB: " + userB._id );
             channelService.get('/direct?sender=' + userA._id + '&recipient=' + userB._id).then(function(response) {
                 console.log("responseData: " +response);
                 if (!response) {
@@ -97,6 +97,7 @@ angular.module('app').controller('chatController', function($scope, $rootScope, 
                 user = $scope.usersDb[y];
             }
         }
+        return user;
     };
 
     $scope.createDirectChat = function(userA, userB) {
