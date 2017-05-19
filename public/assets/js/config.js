@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.router', 'ngAnimate', 'ngMaterial','ngFileUpload', 'lr.upload', 'ngSanitize', 'ui.bootstrap', 'angular-smilies']);
+var app = angular.module('app', ['ui.router', 'ngAnimate', 'ngMaterial', 'ngCookies', 'ngFileUpload', 'lr.upload', 'ngSanitize', 'ui.bootstrap', 'angular-smilies']);
 
 app.config(function($mdThemingProvider, $stateProvider, $qProvider, $urlRouterProvider) {
     $qProvider.errorOnUnhandledRejections(false);
@@ -122,8 +122,9 @@ angular.module('app').factory('channelService', function(REST, userService) {
     };
 });
 
-app.run(function($rootScope, channelService) {
+app.run(function($rootScope, $cookies, channelService) {
     //$rootScope.channels = [];
+    console.log('cookie', $cookies.get('user'));
 
     $rootScope.checkChannels = function() {
         channelService.getAll().then(function(response) {
